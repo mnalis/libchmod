@@ -1,4 +1,4 @@
-/* Matija Nalis, mnalis-libchmod@voyager.hr, 2013 released under GPLv3+ */
+/* Matija Nalis, mnalis-libchmod@voyager.hr, 2013 released under LGPLv3+ */
 
 /* this essentially implements umask()-alike restrictions on chmod(2), fchmod(2) and fchmodat(2)
    Use it to limit effects of 'SITE CHMOD' in vsftpd(8), for example (allow chmod 644, but not 777)
