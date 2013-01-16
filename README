@@ -1,0 +1,15 @@
+This LD_PRELOAD shared library is used to override modes given to chmod(2), fchmod(2) and fchmodat(2)
+In default configuration, it will disable making files group or world writeable.
+
+For example, on Debian system you can edit /etc/init.d/vsftpd and before
+starting daemon put
+
+LD_PRELOAD="/usr/local/lib/libchmod.so"
+export LD_PRELOAD
+
+In such configuration, on your shared web hosting machine, you could allow
+'SITE CHMOD' commands in vsftpd(8) (so users can set their suexec'd CGI
+scripts u+x, for example), but still disallow them to do outrageously stupid
+things they're bound to do following advice on Internet forums, like doing
+"chmod 777" on all files and directories "just in case" and hence opening
+themselves to world of pain (and blaming *YOU* when they get cracked).

@@ -11,6 +11,6 @@ all: libchmod.so
 clean:
 	rm -f *.so *.o
 
-install:
+install: all
 	install libchmod.so /usr/local/lib
 	ldconfig
