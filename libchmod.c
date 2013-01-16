@@ -1,10 +1,10 @@
 /* Matija Nalis, mnalis-libchmod@voyager.hr, 2013 released under GPLv3+ */
 
-/* this essentially implements umask()-alike restrictions on chmod(2) and fchmod(2)
+/* this essentially implements umask()-alike restrictions on chmod(2), fchmod(2) and fchmodat(2)
    Use it to limit effects of 'SITE CHMOD' in vsftpd(8), for example (allow chmod 644, but not 777)
    by doing "LD_PRELOAD=/usr/local/lib/libchmod.so vsftpd"
    
-   v1.0, 2013-01-16
+   v1.1, 2013-01-16
 */
 
 
@@ -47,4 +47,15 @@ int fchmod(int fd, mode_t mode)
     return -1;
   }
   return (*libc_fchmod)(fd, fix_mode(mode));
+}
+
+int fchmodat(int dirfd, const char *pathname, mode_t mode, int flags)
+{
+  int (*libc_fchmodat)(int dirfd, const char *pathname, mode_t mode, int flags);
+  *(void **)(&libc_fchmodat) = dlsym(RTLD_NEXT, "fchmodat");
+  if(dlerror()) {
+    errno = EPERM;
+    return -1;
+  }
+  return (*libc_fchmodat)(dirfd, pathname, fix_mode(mode), flags);
 }
